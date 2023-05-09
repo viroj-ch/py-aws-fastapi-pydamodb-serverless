@@ -1,7 +1,8 @@
-service: my-service-${sls:stage}
+service: my-service
 
 plugins:
   - serverless-offline
+  - serverless-python-requirements
 
 provider:
   name: aws
@@ -19,5 +20,32 @@ functions:
       - http:
           path: /{proxy+}
           method: any
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
     environment:
       ENVIRONMENT_NAME: ${sls:stage}
+
+custom:
+  pythonRequirements:
+    slim: true
+    useDownloadCache: false
+    useStaticCache: false
+    fileName: app/requirements.txt
+    cacheLocation: ./.serverless/.requirements_cache
+    layer:
+      name: ${sls:stage}-${self:service}-dependencies-layer
+      description: "Python requirements lambda layer"
+    noDeploy:
+      - pytest
+      - uvicorn
+
+package:
+  individually: true
+  patterns:
+    - "!node_modules/**"
+    - "!package.json"
+    - "!package-lock.json"
+    - "!README.md"
+    - "!*.iml"
+    - "!**/requirements.txt"
+    - "!**/__pycache__/**"

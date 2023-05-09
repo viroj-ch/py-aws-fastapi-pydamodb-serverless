@@ -18,3 +18,9 @@ http://localhost:3000/dev/search?query=x
 
 http://localhost:3000/dev/docs
 ~~~
+
+~~~
+sls plugin install -n serverless-python-requirements
+sls deploy
+
+~~~
