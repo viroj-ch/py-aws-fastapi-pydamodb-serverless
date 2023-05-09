@@ -1,0 +1,23 @@
+service: my-service-${sls:stage}
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  region: ap-southeast-1
+  runtime: python3.9
+  architecture: arm64
+  timeout: 29
+
+functions:
+  MyMain:
+    name: my-service-fn
+    handler: app/main.lambda_handler
+    memorySize: 128
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
+    environment:
+      ENVIRONMENT_NAME: ${sls:stage}

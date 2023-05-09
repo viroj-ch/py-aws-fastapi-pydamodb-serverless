@@ -1,7 +1,13 @@
+import os
+
 from fastapi import FastAPI
 from mangum import Mangum
 
-app = FastAPI()
+stage = os.getenv('ENVIRONMENT_NAME')
+app = FastAPI(
+    # if not custom domain
+    openapi_prefix=f"/{stage}"
+)
 lambda_handler = Mangum(app)
 
 
