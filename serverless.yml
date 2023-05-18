@@ -38,6 +38,7 @@ custom:
     noDeploy:
       - pytest
       - uvicorn
+      - httpx
 
 package:
   individually: true
