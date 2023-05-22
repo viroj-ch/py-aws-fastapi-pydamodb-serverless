@@ -24,7 +24,7 @@ def search(query: str):
     return {"message": f"You searched for {query}"}
 
 
-@app.get("/dealer")
+@app.get("/dealer", response_model=list[dealer.DealerDTO], response_model_exclude_unset=True)
 def get_dealer(
         dealer_status: str,
         priority_id: Union[str, None] = 'BLANK'
@@ -35,10 +35,10 @@ def get_dealer(
     return dealer.query_by_dealer_status_and_priority_id(dealer_status, priority_id, 10)
 
 
-@app.get("/dealer/{dealer_code}")
+@app.get("/dealer/{dealer_code}", response_model=dealer.DealerDTO)
 async def get_dealer_by_dealer_code(dealer_code: str):
-    if not dealer_code:
-        return {"message": "dealer_code is required"}
+    # if not dealer_code:
+    #     return {"message": "dealer_code is required"}
 
     item = dealer.query_by_dealer_code(dealer_code)
     if item:

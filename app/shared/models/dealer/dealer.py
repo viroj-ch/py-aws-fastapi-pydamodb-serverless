@@ -1,3 +1,6 @@
+from typing import Union
+
+from pydantic import BaseModel
 from pynamodb.attributes import (NumberAttribute, UnicodeAttribute)
 from pynamodb.models import Model
 
@@ -19,3 +22,14 @@ class DealerModel(Model):
     priorityId = UnicodeAttribute()
     priorityLevel = NumberAttribute(default=0)
     taxId = UnicodeAttribute()
+
+
+class DealerDTO(BaseModel):
+    dealerCode: str
+    createdDate: Union[str, None] = None
+    modifiedDate: Union[str, None] = None
+    dealerNameThai: str
+    dealerStatus: str
+    priorityId: str
+    priorityLevel: int
+    taxId: str

@@ -1,4 +1,4 @@
-from .dealer import DealerModel
+from .dealer import DealerModel, DealerDTO
 
 
 def query_by_dealer_status_and_priority_id(dealer_status: str, priority_id: str, limit: int):
@@ -7,11 +7,12 @@ def query_by_dealer_status_and_priority_id(dealer_status: str, priority_id: str,
         DealerModel.priorityId == priority_id,
         limit=limit
     )
-    return [result.attribute_values for result in results]
+    return [DealerDTO(**result.attribute_values) for result in results]
 
 
 def query_by_dealer_code(dealer_code: str):
     try:
-        return DealerModel.get(dealer_code).attribute_values
+        # return DealerModel.get(dealer_code).attribute_values
+        return DealerDTO(**DealerModel.get(dealer_code).attribute_values)
     except DealerModel.DoesNotExist:
         return None
